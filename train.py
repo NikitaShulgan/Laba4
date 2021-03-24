@@ -17,6 +17,7 @@ from tensorflow.keras.applications import EfficientNetB0
 from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras import layers
 import tensorflow.keras.applications
+from tensorflow.keras.models import Sequential
 
 # Avoid greedy memory allocation to allow shared GPU usage
 gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -30,6 +31,14 @@ NUM_CLASSES = 20
 RESIZE_TO = 224
 TRAIN_SIZE = 12786
 
+img_augmentation = keras.Sequential(
+    [
+        preprocessing.RandomRotation(factor=0.15),
+        preprocessing.RandomTranslation(height_factor=0.1, width_factor=0.1),
+        preprocessing.RandomFlip(),
+        preprocessing.RandomContrast(factor=0.1),
+    ]
+)
 
 def parse_proto_example(proto):
   keys_to_features = {
@@ -61,7 +70,8 @@ def create_dataset(filenames, batch_size):
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  x = EfficientNetB0(include_top=False, input_tensor=inputs, weights="imagenet")
+  x = img_augmentation(inputs)
+  x = EfficientNetB0(include_top=False, input_tensor=x, weights="imagenet")
   x.trainable = False
   x = layers.GlobalAveragePooling2D()(x.output)
   outputs = tf.keras.layers.Dense(NUM_CLASSES, activation="softmax")(x)
@@ -97,7 +107,7 @@ def main():
   model = build_model()
 
   model.compile(
-    optimizer=tf.optimizers.Adam(lr=0.001),
+    optimizer=tf.optimizers.Adam(),
     loss=tf.keras.losses.categorical_crossentropy,
     metrics=[tf.keras.metrics.categorical_accuracy],
   )
