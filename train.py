@@ -68,7 +68,7 @@ def create_dataset(filenames, batch_size):
   """
   #.map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)
   return tf.data.TFRecordDataset(filenames)\
-    .map(augment, parse_proto_example)\
+    .map(parse_proto_example, augment)\
     .cache()\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
