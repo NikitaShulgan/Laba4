@@ -68,6 +68,10 @@ def augment(image_label, seed):
 #   image = tf.clip_by_value(image, 0, 1)
   return image, label
 
+# counter = tf.data.experimental.Counter()
+# train_ds = tf.data.Dataset.zip((train_datasets, (counter, counter)))
+rng = tf.random.Generator.from_seed(123, alg='philox')
+
 def f(x, y):
   seed = rng.make_seeds(2)[0]
   image, label = augment((x, y), seed)
