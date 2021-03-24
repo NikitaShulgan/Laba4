@@ -72,9 +72,9 @@ def augment(image_label, seed):
 # train_ds = tf.data.Dataset.zip((train_datasets, (counter, counter)))
 rng = tf.random.Generator.from_seed(123, alg='philox')
 
-def f(x, y):
+def f(x):
   seed = rng.make_seeds(2)[0]
-  image, label = augment((x, y), seed)
+  image, label = augment(x, seed)
   return image, label
 
 def parse_proto_example(proto):
