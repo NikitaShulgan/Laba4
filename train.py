@@ -40,10 +40,10 @@ img_augmentation = keras.Sequential(
     ]
 )
 
-def augment(image, label):
-  bright = tf.image.adjust_brightness(image, delta=0.1)
-  contrast = tf.image.adjust_contrast(image, 2)
-  return image, label
+# def augment(image, label):
+#   bright = tf.image.adjust_brightness(image, delta=0.1)
+#   contrast = tf.image.adjust_contrast(image, 2)
+#   return image, label
 
 def parse_proto_example(proto):
   keys_to_features = {
@@ -68,7 +68,7 @@ def create_dataset(filenames, batch_size):
   """
   #.map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)
   return tf.data.TFRecordDataset(filenames)\
-    .map(augment, num_parallel_calls=tf.data.AUTOTUNE)\
+    .map(parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)\
     .cache()\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
@@ -76,8 +76,8 @@ def create_dataset(filenames, batch_size):
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  #x = tf.keras.preprocessing.image.random_brightness(inputs, 3.0)
-  #x = img_augmentation(inputs)
+  x = img_augmentation(inputs)
+  x = tf.keras.preprocessing.image.random_brightness(x, 3.0)
   x = EfficientNetB0(include_top=False, input_tensor=x, weights="imagenet")
   x.trainable = False
   x = layers.GlobalAveragePooling2D()(x.output)
