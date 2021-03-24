@@ -66,8 +66,9 @@ def create_dataset(filenames, batch_size):
   :tfrecords_files: Mask to collect tfrecords file of dataset
   :returns: tf.data.Dataset
   """
+  #.map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)
   return tf.data.TFRecordDataset(filenames)\
-    .map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)\
+    .map(augment, parse_proto_example)\
     .cache()\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
