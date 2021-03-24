@@ -31,19 +31,42 @@ NUM_CLASSES = 20
 RESIZE_TO = 224
 TRAIN_SIZE = 12786
 
-img_augmentation = keras.Sequential(
-    [
-        preprocessing.RandomRotation(factor=0.15),
-        preprocessing.RandomTranslation(height_factor=0.1, width_factor=0.1),
-        preprocessing.RandomFlip(),
-        preprocessing.RandomContrast(factor=0.1),
-    ]
-)
+# img_augmentation = keras.Sequential(
+#     [
+#         preprocessing.RandomRotation(factor=0.15),
+#         preprocessing.RandomTranslation(height_factor=0.1, width_factor=0.1),
+#         preprocessing.RandomFlip(),
+#         preprocessing.RandomContrast(factor=0.1),
+#     ]
+# )
 
 # def augment(image, label):
 #   bright = tf.image.adjust_brightness(image, delta=0.1)
 #   contrast = tf.image.adjust_contrast(image, 2)
 #   return image, label
+
+
+# resize_and_rescale = tf.keras.Sequential([
+#   layers.experimental.preprocessing.Resizing(RESIZE_TO, RESIZE_TO),
+#   layers.experimental.preprocessing.Rescaling(1./255)
+# ])
+
+def augment(image_label, seed):
+  image, label = image_label
+  #image, label = resize_and_rescale(image, label)
+#   tf.image.stateless_random_brightness(image, max_delta, seed)
+#   tf.image.stateless_random_contrast(image, lower, upper, seed)
+  image = tf.image.resize_with_crop_or_pad(image, IMG_SIZE + 6, IMG_SIZE + 6)
+  # Make a new seed
+  new_seed = tf.random.experimental.stateless_split(seed, num=1)[0, :]
+  # Random crop back to the original size
+#   image = tf.image.stateless_random_crop(
+#       image, size=[IMG_SIZE, IMG_SIZE, 3], seed=seed)
+  # Random brightness
+  image = tf.image.stateless_random_brightness(
+      image, max_delta=0.5, seed=new_seed)
+#   image = tf.clip_by_value(image, 0, 1)
+  return image, label
 
 def parse_proto_example(proto):
   keys_to_features = {
@@ -68,7 +91,7 @@ def create_dataset(filenames, batch_size):
   """
   #.map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)
   return tf.data.TFRecordDataset(filenames)\
-    .map(parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)\
+    .map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)\
     .cache()\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
@@ -76,8 +99,8 @@ def create_dataset(filenames, batch_size):
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  x = img_augmentation(inputs)
-  x = tf.keras.preprocessing.image.random_brightness(x, 3.0)
+  #x = img_augmentation(inputs)
+  #x = tf.keras.preprocessing.image.random_brightness(x, 3.0)
   x = EfficientNetB0(include_top=False, input_tensor=x, weights="imagenet")
   x.trainable = False
   x = layers.GlobalAveragePooling2D()(x.output)
