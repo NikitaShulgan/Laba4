@@ -91,7 +91,7 @@ def step_decay(epoch):
            math.floor((1+epoch)/epochs_drop))
    return lrate
   
-  lrate = LearningRateScheduler(step_decay)
+ lrate = LearningRateScheduler(step_decay)
 
 
 def main():
