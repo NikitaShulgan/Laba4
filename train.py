@@ -68,6 +68,11 @@ def augment(image_label, seed):
 #   image = tf.clip_by_value(image, 0, 1)
   return image, label
 
+def f(x, y):
+  seed = rng.make_seeds(2)[0]
+  image, label = augment((x, y), seed)
+  return image, label
+
 def parse_proto_example(proto):
   keys_to_features = {
     'image/encoded': tf.io.FixedLenFeature((), tf.string, default_value=''),
@@ -91,7 +96,7 @@ def create_dataset(filenames, batch_size):
   """
   #.map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)
   return tf.data.TFRecordDataset(filenames)\
-    .map(augment, num_parallel_calls=tf.data.AUTOTUNE)\
+    .map(f, num_parallel_calls=tf.data.AUTOTUNE)\
     .cache()\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
