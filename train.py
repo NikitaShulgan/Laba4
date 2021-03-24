@@ -42,7 +42,7 @@ img_augmentation = keras.Sequential(
 
 def augment(image, label):
   bright = tf.image.adjust_brightness(image, delta=0.1)
-  contrast = tf.image.adjust_contrast(images, 2)
+  contrast = tf.image.adjust_contrast(image, 2)
   return image, label
 
 def parse_proto_example(proto):
