@@ -70,7 +70,8 @@ def create_dataset(filenames, batch_size):
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  x = img_augmentation(inputs)
+  x = tf.keras.preprocessing.image.random_brightness(inputs, brightness_range = 3.0)
+  #x = img_augmentation(inputs)
   x = EfficientNetB0(include_top=False, input_tensor=x, weights="imagenet")
   x.trainable = False
   x = layers.GlobalAveragePooling2D()(x.output)
