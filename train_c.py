@@ -33,7 +33,7 @@ TRAIN_SIZE = 12786
 
 img_augmentation = keras.Sequential(
     [
-        preprocessing.RandomCrop()
+        preprocessing.RandomCrop(200, 200)
     ]
 )
 
