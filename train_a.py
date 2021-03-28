@@ -18,6 +18,7 @@ from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras import layers
 import tensorflow.keras.applications
 from tensorflow.keras.models import Sequential
+import tensorflow.image
 
 # Avoid greedy memory allocation to allow shared GPU usage
 gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -94,8 +95,9 @@ def create_dataset(filenames, batch_size):
   """
   #.map(augment, parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)
   return tf.data.TFRecordDataset(filenames)\
-    .map(augment, num_parallel_calls=tf.data.AUTOTUNE)\
+    .map(parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)\
     .cache()\
+    .map(augment)\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
 
