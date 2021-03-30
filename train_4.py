@@ -33,12 +33,12 @@ TRAIN_SIZE = 12786
 
 img_augmentation = keras.Sequential(
     [
-        preprocessing.RandomRotation(factor=0.2)
+        preprocessing.RandomRotation(factor=0.3)
     ]
 )
 
 def augment(image, label):
-  bright = tf.image.adjust_brightness(image, delta=0.2)
+  bright = tf.image.adjust_brightness(image, delta=0.1)
   contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
   crop = tf.image.random_crop(contrast, [RESIZE_TO, RESIZE_TO, 3])
   return crop, label
@@ -75,7 +75,7 @@ def create_dataset(filenames, batch_size):
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  x = tf.keras.layers.GaussianNoise(stddev=0.1)(inputs)
+  x = tf.keras.layers.GaussianNoise(stddev=0.05)(inputs)
   x = img_augmentation(x)
   #x = img_augmentation(inputs)
   #x = tf.keras.preprocessing.image.random_brightness(x, 3.0)
