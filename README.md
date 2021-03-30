@@ -12,7 +12,7 @@ def augment(image, label):
 #### owl-1616964737.1780863 ```delta=0.5, contrast_factor=5 ```
 
 #### epoch_categorical_accuracy
-<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/a_epoch_categorical_accuracy.svg.svg">
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/a_epoch_categorical_accuracy.svg">
 
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/a_epoch_loss.svg">
