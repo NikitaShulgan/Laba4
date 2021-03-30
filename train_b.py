@@ -33,7 +33,7 @@ TRAIN_SIZE = 12786
 
 img_augmentation = keras.Sequential(
     [
-        preprocessing.RandomRotation(factor=0.95)
+        preprocessing.RandomRotation(factor=0.15)
     ]
 )
 
@@ -113,15 +113,15 @@ def build_model():
 #    lrate = initial_lrate * exp(-k*t)
 #    return lrate
 
-def step_decay(epoch):
-   initial_lrate = 0.1
-   drop = 0.6
-   epochs_drop = 5.0
-   lrate = initial_lrate * math.pow(drop,  
-           math.floor((1+epoch)/epochs_drop))
-   return lrate
+# def step_decay(epoch):
+#    initial_lrate = 0.1
+#    drop = 0.6
+#    epochs_drop = 5.0
+#    lrate = initial_lrate * math.pow(drop,  
+#            math.floor((1+epoch)/epochs_drop))
+#    return lrate
   
-lrate = LearningRateScheduler(step_decay)
+# lrate = LearningRateScheduler(step_decay)
 
 
 def main():
@@ -137,7 +137,7 @@ def main():
   model = build_model()
 
   model.compile(
-    optimizer=tf.optimizers.Adam(),
+    optimizer=tf.optimizers.Adam(0.001),
     loss=tf.keras.losses.categorical_crossentropy,
     metrics=[tf.keras.metrics.categorical_accuracy],
   )
