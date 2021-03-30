@@ -31,16 +31,11 @@ NUM_CLASSES = 20
 RESIZE_TO = 224
 TRAIN_SIZE = 12786
 
-img_augmentation = keras.Sequential(
-    [
-        preprocessing.RandomCrop(224, 224)
-    ]
-)
 
-# def augment(image, label):
-#   bright = tf.image.adjust_brightness(image, delta=0.1)
-#   contrast = tf.image.adjust_contrast(image, 2)
-#   return image, label
+
+def augment(image, label):
+  crop = tf.image.random_crop(image, [RESIZE_TO, RESIZE_TO, 3])
+  return crop, label
 
 
 # resize_and_rescale = tf.keras.Sequential([
@@ -93,15 +88,14 @@ def create_dataset(filenames, batch_size):
   return tf.data.TFRecordDataset(filenames)\
     .map(parse_proto_example, num_parallel_calls=tf.data.AUTOTUNE)\
     .cache()\
+    .map(augment)\
     .batch(batch_size)\
     .prefetch(tf.data.AUTOTUNE)
 
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  x = img_augmentation(inputs)
-  #x = tf.keras.preprocessing.image.random_brightness(x, 3.0)
-  x = EfficientNetB0(include_top=False, input_tensor=x, weights="imagenet")
+  x = EfficientNetB0(include_top=False, input_tensor=inputs, weights="imagenet")
   x.trainable = False
   x = layers.GlobalAveragePooling2D()(x.output)
   outputs = tf.keras.layers.Dense(NUM_CLASSES, activation="softmax")(x)
