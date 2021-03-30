@@ -42,8 +42,8 @@ TRAIN_SIZE = 12786
 # )
 
 def augment(image, label):
-  bright = tf.image.adjust_brightness(image, delta=0.1)
-  contrast = tf.image.adjust_contrast(bright, contrast_factor=1)
+  bright = tf.image.adjust_brightness(image, delta=0.2)
+  contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
   return contrast, label
 
 
