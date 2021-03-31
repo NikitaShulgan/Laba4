@@ -71,3 +71,85 @@ example['image'] = tf.image.resize(example['image'], tf.constant([250, 250]))
 
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/c_epoch_loss.svg">
+
+### 2d. Добавление случайного шума
+
+[Train_d](https://github.com/NikitaShulgan/Laba4/blob/main/train_d.py)
+
+```
+x = tf.keras.layers.GaussianNoise(stddev=0.3)(inputs)
+```
+
+#### owl-1617149636.111514 ``` GaussianNoise(stddev=0.1) ```
+#### owl-1617150505.5036304 ``` GaussianNoise(stddev=0.2) ```
+#### owl-1617151266.492741 ``` GaussianNoise(stddev=0.3) ```
+
+![image](https://user-images.githubusercontent.com/80168174/113077161-48307c80-91d9-11eb-8a14-ea98fca8556e.png)
+
+#### epoch_categorical_accuracy
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/d_epoch_categorical_accuracy.svg">
+
+#### epoch_loss
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/d_epoch_loss.svg">
+
+### 4. Обучить нейронную сеть с использованием оптимальных техник аугментации данных 2a-d совместно
+
+[Train_4](https://github.com/NikitaShulgan/Laba4/blob/main/train_4.py)
+
+```
+img_augmentation = keras.Sequential(
+    [
+        preprocessing.RandomRotation(factor=0.3)
+    ]
+)
+
+def augment(image, label):
+  bright = tf.image.adjust_brightness(image, delta=0.1)
+  contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
+  crop = tf.image.random_crop(contrast, [RESIZE_TO, RESIZE_TO, 3])
+  return crop, label
+  
+example['image'] = tf.image.resize(example['image'], tf.constant([230, 230]))
+
+x = tf.keras.layers.GaussianNoise(stddev=0.05)(inputs)
+```
+
+#### owl-1617137192.8869357 
+
+```
+preprocessing.RandomRotation(factor=0.95)
+bright = tf.image.adjust_brightness(image, delta=0.5)
+contrast = tf.image.adjust_contrast(bright, contrast_factor=5)
+tf.constant([230, 230]))
+GaussianNoise(stddev=0.3)(inputs)
+```
+
+#### owl-1617138108.3832264
+
+```
+preprocessing.RandomRotation(factor=0.2)
+bright = tf.image.adjust_brightness(image, delta=0.2)
+contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
+tf.constant([230, 230])
+GaussianNoise(stddev=0.1)
+```
+
+#### owl-1617139009.7203932
+
+```
+preprocessing.RandomRotation(factor=0.3)
+bright = tf.image.adjust_brightness(image, delta=0.1)
+contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
+tf.constant([230, 230]))
+GaussianNoise(stddev=0.05)(inputs)
+```
+
+![image](https://user-images.githubusercontent.com/80168174/113077731-5fbc3500-91da-11eb-95da-71d7c7b0db3d.png)
+
+у validation наилучшее значение
+
+#### epoch_categorical_accuracy
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/4_epoch_categorical_accuracy.svg">
+
+#### epoch_loss
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/4_epoch_loss.svg">
