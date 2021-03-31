@@ -33,13 +33,13 @@ TRAIN_SIZE = 12786
 
 img_augmentation = keras.Sequential(
     [
-        preprocessing.RandomRotation(factor=0.3)
+        preprocessing.RandomRotation(factor=0.01)
     ]
 )
 
 def augment(image, label):
-  bright = tf.image.adjust_brightness(image, delta=0.1)
-  contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
+  bright = tf.image.adjust_brightness(image, delta=0.3)
+  contrast = tf.image.adjust_contrast(bright, contrast_factor=3)
   crop = tf.image.random_crop(contrast, [RESIZE_TO, RESIZE_TO, 3])
   return crop, label
 
@@ -51,7 +51,7 @@ def parse_proto_example(proto):
   example = tf.io.parse_single_example(proto, keys_to_features)
   example['image'] = tf.image.decode_jpeg(example['image/encoded'], channels=3)
   example['image'] = tf.image.convert_image_dtype(example['image'], dtype=tf.uint8)
-  example['image'] = tf.image.resize(example['image'], tf.constant([230, 230]))
+  example['image'] = tf.image.resize(example['image'], tf.constant([225, 225]))
   return example['image'], tf.one_hot(example['image/label'], depth=NUM_CLASSES)
 
 
@@ -75,7 +75,7 @@ def create_dataset(filenames, batch_size):
 
 def build_model():
   inputs = tf.keras.Input(shape=(RESIZE_TO, RESIZE_TO, 3))
-  x = tf.keras.layers.GaussianNoise(stddev=0.05)(inputs)
+  x = tf.keras.layers.GaussianNoise(stddev=0.1)(inputs)
   x = img_augmentation(x)
   #x = img_augmentation(inputs)
   #x = tf.keras.preprocessing.image.random_brightness(x, 3.0)
