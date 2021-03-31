@@ -21,6 +21,9 @@ def augment(image, label):
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/a_epoch_loss.svg">
 
+### Итог
+Наилучший результат у алгоритма с параметрами яркости и контастности равными ```delta=0.2, contrast_factor=2 ``` соответсвенно.
+
 ### 2b. Поворот изображения на случайный угол
 [Train_b](https://github.com/NikitaShulgan/Laba4/blob/main/train_b.py)
 
@@ -49,6 +52,9 @@ validation имеет наилучшее качество среди оранж�
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/b_epoch_loss.svg">
 
+### Итог
+Использование ``` RandomRotation ``` в алгоритмах не помогло улучшить результат, а только ухудшило его.
+
 ### 2c. Использование случайной части изображения
 
 [Train_c](https://github.com/NikitaShulgan/Laba4/blob/main/train_c.py)
@@ -74,6 +80,9 @@ example['image'] = tf.image.resize(example['image'], tf.constant([250, 250]))
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/c_epoch_loss.svg">
 
+### Итог
+Лучше всего себя показал алгоритм где было увеличено изображение до 225x225. 
+
 ### 2d. Добавление случайного шума
 
 [Train_d](https://github.com/NikitaShulgan/Laba4/blob/main/train_d.py)
@@ -93,6 +102,9 @@ x = tf.keras.layers.GaussianNoise(stddev=0.3)(inputs)
 
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/d_epoch_loss.svg">
+
+### Итог
+Лучше всего себя показал алгоритм со стандартным отклонением распределения шума ``` stddev=0.2 ```
 
 ### 4. Обучить нейронную сеть с использованием оптимальных техник аугментации данных 2a-d совместно
 
@@ -175,3 +187,6 @@ GaussianNoise(stddev=0.05)
 
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/4_epoch_loss.svg">
+
+### Итог 
+Лучше всего себя показал алгоритм owl-1617172100.647061 с параметрами ``` RandomRotation(factor=0.01), delta=0.2, contrast_factor=2, [225, 225], stddev=0.05 ```
