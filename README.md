@@ -104,7 +104,7 @@ x = tf.keras.layers.GaussianNoise(stddev=0.3)(inputs)
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/d_epoch_loss.svg">
 
 ### Итог
-Лучше всего себя показал алгоритм со стандартным отклонением распределения шума ``` stddev=0.2 ```
+Лучше всего себя показал алгоритм со стандартным отклонением распределения шума ``` stddev=0.2 ```. В сравнении с validation улучшение 0.26%.
 
 ### 4. Обучить нейронную сеть с использованием оптимальных техник аугментации данных 2a-d совместно
 
@@ -189,4 +189,7 @@ GaussianNoise(stddev=0.05)
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/4_epoch_loss.svg">
 
 ### Итог 
-Лучше всего себя показал алгоритм owl-1617172100.647061 с параметрами ``` RandomRotation(factor=0.01), delta=0.2, contrast_factor=2, [225, 225], stddev=0.05 ```
+Лучше всего себя показал алгоритм owl-1617172100.647061 с параметрами ``` RandomRotation(factor=0.01), delta=0.2, contrast_factor=2, [225, 225], stddev=0.05 ```. Улучшение в сравнении с validation 0.13%.
+
+### Анализ результатов
+  Во 3 из 4х случаях мы смогли добиться улучшения результатов. Не получилось добиться улучшение используя ``` RandomRotation ```. В совместном использовании техник аументации удалось добиться улучшения на 0.13%. 
