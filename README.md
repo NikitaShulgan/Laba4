@@ -144,9 +144,29 @@ tf.constant([230, 230]))
 GaussianNoise(stddev=0.05)(inputs)
 ```
 
-![image](https://user-images.githubusercontent.com/80168174/113077731-5fbc3500-91da-11eb-95da-71d7c7b0db3d.png)
+#### owl-1617171172.1995904
 
-у validation наилучшее значение
+```
+RandomRotation(factor=0.01)
+bright = tf.image.adjust_brightness(image, delta=0.3)
+contrast = tf.image.adjust_contrast(bright, contrast_factor=3)
+tf.constant([225, 225])
+GaussianNoise(stddev=0.1)
+```
+
+#### owl-1617172100.647061
+
+```
+preprocessing.RandomRotation(factor=0.01)
+bright = tf.image.adjust_brightness(image, delta=0.2)
+contrast = tf.image.adjust_contrast(bright, contrast_factor=2)
+tf.constant([225, 225]))
+GaussianNoise(stddev=0.05)
+```
+
+![image](https://user-images.githubusercontent.com/80168174/113112894-6070bd80-9212-11eb-8da5-fc6064e0647d.png)
+
+у validation наилучшее значение из оранжевых графиков
 
 #### epoch_categorical_accuracy
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/4_epoch_categorical_accuracy.svg">
