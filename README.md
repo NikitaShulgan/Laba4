@@ -46,3 +46,28 @@ validation имеет наилучшее качество
 
 #### epoch_loss
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/b_epoch_loss.svg">
+
+### 2c. Использование случайной части изображения
+
+[Train_c](https://github.com/NikitaShulgan/Laba4/blob/main/train_c.py)
+
+```
+def augment(image, label):
+  crop = tf.image.random_crop(image, [RESIZE_TO, RESIZE_TO, 3])
+  return crop, label
+  
+example['image'] = tf.image.resize(example['image'], tf.constant([250, 250]))
+
+```
+
+#### owl-1617147061.7724357 ``` tf.constant([225, 225])) ```
+#### owl-1617147938.0101054 ``` tf.constant([235, 235])) ```
+#### owl-1617148800.4023037 ``` tf.constant([250, 250])) ```
+
+![image](https://user-images.githubusercontent.com/80168174/113076731-5b8f1800-91d8-11eb-9543-a1c4ff351b5d.png)
+
+#### epoch_categorical_accuracy
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/c_epoch_categorical_accuracy.svg">
+
+#### epoch_loss
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/c_epoch_loss.svg">
