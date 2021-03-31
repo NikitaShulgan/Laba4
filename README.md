@@ -22,9 +22,24 @@ def augment(image, label):
 <img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/a_epoch_loss.svg">
 
 ### 2b. Поворот изображения на случайный угол
+[Train_b](https://github.com/NikitaShulgan/Laba4/blob/main/train_b.py)
+```
+img_augmentation = keras.Sequential(
+    [
+        preprocessing.RandomRotation(factor=0.65)
+    ]
+)
 ```
 
-```
-####  ``` ```
-#### owl-1617140912.2121003 ```delta=0.2, contrast_factor=2 ```
-#### owl-1617141971.0594199 ```delta=0.3, contrast_factor=3 ```
+#### owl-1617143093.9155948 ``` factor=0.15 ```
+#### owl-1617144184.6226113 ``` factor=0.35 ```
+#### owl-1617145662.0106604 ``` factor=0.65 ```
+
+![image](https://user-images.githubusercontent.com/80168174/113076081-fe469700-91d6-11eb-86c2-1dbefb4ec722.png)
+validation имеет наилучшее качество
+
+#### epoch_categorical_accuracy
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/b_epoch_categorical_accuracy.svg">
+
+#### epoch_loss
+<img src="https://raw.githubusercontent.com/NikitaShulgan/Laba4/main/For_Readme/b_epoch_loss.svg">
